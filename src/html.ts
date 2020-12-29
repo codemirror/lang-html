@@ -1,8 +1,8 @@
 import {parser, configureNesting} from "lezer-html"
-import {cssLanguage, css} from "@codemirror/next/lang-css"
-import {javascriptLanguage, javascript} from "@codemirror/next/lang-javascript"
-import {LezerLanguage, indentNodeProp, foldNodeProp, LanguageSupport} from "@codemirror/next/language"
-import {styleTags, tags as t} from "@codemirror/next/highlight"
+import {cssLanguage, css} from "@codemirror/lang-css"
+import {javascriptLanguage, javascript} from "@codemirror/lang-javascript"
+import {LezerLanguage, indentNodeProp, foldNodeProp, LanguageSupport} from "@codemirror/language"
+import {styleTags, tags as t} from "@codemirror/highlight"
 import {completeHTML} from "./complete"
 
 /// A language provider based on the [Lezer HTML

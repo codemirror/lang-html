@@ -1,6 +1,6 @@
-import {EditorState, Text} from "@codemirror/next/state"
-import {syntaxTree} from "@codemirror/next/language"
-import {CompletionContext, CompletionResult} from "@codemirror/next/autocomplete"
+import {EditorState, Text} from "@codemirror/state"
+import {syntaxTree} from "@codemirror/language"
+import {CompletionContext, CompletionResult} from "@codemirror/autocomplete"
 import {SyntaxNode} from "lezer-tree"
 
 type AttrSpec = {[attrName: string]: null | readonly string[]}
