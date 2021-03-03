@@ -14,11 +14,25 @@ export const htmlLanguage = LezerLanguage.define({
     props: [
       indentNodeProp.add({
         Element(context) {
-          let closed = /^\s*<\//.test(context.textAfter)
-          return context.lineIndent(context.state.doc.lineAt(context.node.from)) + (closed ? 0 : context.unit)
+          let after = /^(\s*)(<\/)?/.exec(context.textAfter)!
+          if (context.node.to <= context.pos + after[0].length) return context.continue()
+          return context.lineIndent(context.state.doc.lineAt(context.node.from)) + (after[1] ? 0 : context.unit)
         },
         "OpenTag CloseTag SelfClosingTag"(context) {
           return context.column(context.node.from) + context.unit
+        },
+        Document(context) {
+          if (context.pos + /\s*/.exec(context.textAfter)![0].length < context.node.to)
+            return context.continue()
+          let endElt = null, close
+          for (let cur = context.node;;) {
+            let last = cur.lastChild
+            if (!last || last.name != "Element" || last.to != cur.to) break
+            endElt = cur = last
+          }
+          if (endElt && !((close = endElt.lastChild) && (close.name == "CloseTag" || close.name == "SelfClosingTag")))
+            return context.lineIndent(context.state.doc.lineAt(endElt.from)) + context.unit
+          return null
         }
       }),
       foldNodeProp.add({
