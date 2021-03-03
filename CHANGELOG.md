@@ -1,3 +1,9 @@
+## 0.18.0 (2021-03-03)
+
+### Bug fixes
+
+Improves indentation at end of implicitly closed elements.
+
 ## 0.17.1 (2021-01-06)
 
 ### New features
