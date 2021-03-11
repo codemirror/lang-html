@@ -389,7 +389,7 @@ function openTags(doc: Text, tree: SyntaxNode) {
   for (let parent: SyntaxNode | null = tree; parent = findParentElement(parent);) {
     let tagName = elementName(doc, parent)
     if (tagName && parent.lastChild!.name == "CloseTag") break
-    if (tagName && open.indexOf(tagName) < 0)
+    if (tagName && open.indexOf(tagName) < 0 && tree.from >= parent.firstChild!.to)
       open.push(tagName)
   }
   return open
