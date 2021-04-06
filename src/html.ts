@@ -16,7 +16,7 @@ export const htmlLanguage = LezerLanguage.define({
         Element(context) {
           let after = /^(\s*)(<\/)?/.exec(context.textAfter)!
           if (context.node.to <= context.pos + after[0].length) return context.continue()
-          return context.lineIndent(context.state.doc.lineAt(context.node.from)) + (after[1] ? 0 : context.unit)
+          return context.lineIndent(context.state.doc.lineAt(context.node.from)) + (after[2] ? 0 : context.unit)
         },
         "OpenTag CloseTag SelfClosingTag"(context) {
           return context.column(context.node.from) + context.unit
