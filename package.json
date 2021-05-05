@@ -32,7 +32,7 @@
     "@codemirror/lang-javascript": "^0.18.0",
     "@codemirror/language": "^0.18.0",
     "@codemirror/state": "^0.18.0",
-    "lezer-html": "^0.13.0",
+    "lezer-html": "^0.13.5",
     "lezer-tree": "^0.13.0"
   },
   "devDependencies": {
