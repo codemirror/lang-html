@@ -365,8 +365,7 @@ const GlobalAttrNames = Object.keys(GlobalAttrs)
 
 function elementName(doc: Text, tree: SyntaxNode) {
   let tag = tree.firstChild
-  if (!tag || tag.name != "OpenTag") return ""
-  let name = tag.getChild("TagName")
+  let name = tag && tag.getChild("TagName")
   return name ? doc.sliceString(name.from, name.to) : ""
 }
 
