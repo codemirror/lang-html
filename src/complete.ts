@@ -458,6 +458,12 @@ function completeAttrValue(state: EditorState, tree: SyntaxNode, from: number, t
 
 export function completeHTML(context: CompletionContext): CompletionResult | null {
   let {state, pos} = context, around = syntaxTree(state).resolve(pos), tree = around.resolve(pos, -1)
+  for (let scan = pos, before; around == tree && (before = tree.childBefore(scan));) {
+    let last = before.lastChild
+    if (!last || !last.type.isError || last.from < last.to) break
+    around = tree = before
+    scan = last.from
+  }
   if (tree.name == "TagName") {
     return tree.parent && /CloseTag$/.test(tree.parent.name) ? completeCloseTag(state, tree, tree.from, pos)
       : completeTag(state, tree, tree.from, pos)

@@ -46,7 +46,7 @@ describe("HTML completion", () => {
   })
 
   it("completes attribute names explicitly", () => {
-    let c = get("<body |>", {explicit: true})!.options
+    let c = get("<body |", {explicit: true})!.options
     ist(c.length)
     ist(c.every(o => o.type == "property"))
   })
