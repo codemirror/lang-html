@@ -1,3 +1,15 @@
+## 0.18.1 (2021-05-05)
+
+### Bug fixes
+
+Fix an issue where the completer would sometimes try to complete an opening tag to its own close tag.
+
+Fix a bug that would sometimes produce the wrong indentation in HTML elements.
+
+Fix a bug that broke tag-specific attribute completion in tags like `<input>` or `<script>`.
+
+Move a new version of lezer-html which solves some issues with autocompletion.
+
 ## 0.18.0 (2021-03-03)
 
 ### Bug fixes
