@@ -1,4 +1,4 @@
-import {parser, configureNesting} from "lezer-html"
+import {parser, configureNesting} from "@lezer/html"
 import {cssLanguage, css} from "@codemirror/lang-css"
 import {javascriptLanguage, javascript} from "@codemirror/lang-javascript"
 import {LezerLanguage, indentNodeProp, foldNodeProp, LanguageSupport} from "@codemirror/language"
@@ -6,7 +6,7 @@ import {styleTags, tags as t} from "@codemirror/highlight"
 import {completeHTML} from "./complete"
 
 /// A language provider based on the [Lezer HTML
-/// parser](https://github.com/lezer-parser/html), wired up with the
+/// parser](https://github.com/lezer-parser/html), extended with the
 /// JavaScript and CSS parsers to parse the content of `<script>` and
 /// `<style>` tags.
 export const htmlLanguage = LezerLanguage.define({
@@ -57,7 +57,7 @@ export const htmlLanguage = LezerLanguage.define({
         DoctypeDecl: t.documentMeta
       })
     ],
-    nested: configureNesting([
+    wrap: configureNesting([
       {tag: "script",
        attrs(attrs) {
          return !attrs.type || /^(?:text|application)\/(?:x-)?(?:java|ecma)script$|^module$|^$/i.test(attrs.type)

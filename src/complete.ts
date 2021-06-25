@@ -1,7 +1,7 @@
 import {EditorState, Text} from "@codemirror/state"
 import {syntaxTree} from "@codemirror/language"
 import {CompletionContext, CompletionResult} from "@codemirror/autocomplete"
-import {SyntaxNode} from "lezer-tree"
+import {SyntaxNode} from "@lezer/common"
 
 type AttrSpec = {[attrName: string]: null | readonly string[]}
 type TagSpec = {[tagName: string]: {attrs?: AttrSpec, children?: readonly string[]}}
