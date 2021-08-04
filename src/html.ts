@@ -72,7 +72,7 @@ export const htmlLanguage = LezerLanguage.define({
   }),
   languageData: {
     commentTokens: {block: {open: "<!--", close: "-->"}},
-    indentOnInput: /^\s*<\/$/
+    indentOnInput: /^\s*<\/\w+\W$/
   }
 })
 
