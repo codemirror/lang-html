@@ -83,6 +83,14 @@ export const htmlCompletion = htmlLanguage.data.of({autocomplete: completeHTML})
 /// Language support for HTML, including
 /// [`htmlCompletion`](#lang-html.htmlCompletion) and JavaScript and
 /// CSS support extensions.
-export function html() {
-  return new LanguageSupport(htmlLanguage, [htmlCompletion, javascript().support, css().support])
+export function html(config: {
+  /// By default, the syntax tree will highlight mismatched closing
+  /// tags. Set this to `false` to turn that off (for example when you
+  /// expect to only be parsing a fragment of HTML text, not a full
+  /// document).
+  matchClosingTags?: boolean
+} = {}) {
+  let lang = htmlLanguage
+  if (config.matchClosingTags === false) lang = lang.configure({dialect: "noMatch"})
+  return new LanguageSupport(lang, [htmlCompletion, javascript().support, css().support])
 }
