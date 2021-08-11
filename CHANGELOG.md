@@ -1,3 +1,13 @@
+## 0.19.0 (2021-08-11)
+
+### Bug fixes
+
+Improve autocompletion in/after unclosed opening tags.
+
+### New features
+
+`html()` now takes a `matchClosingTags` option to turn off closing tag matching.
+
 ## 0.18.1 (2021-05-05)
 
 ### Bug fixes
