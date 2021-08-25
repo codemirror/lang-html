@@ -122,8 +122,7 @@ const Tags: TagSpec = {
   hgroup: S,
   hr: S,
   html: {
-    attrs: { manifest: null },
-    children: ["head", "body"]
+    attrs: { manifest: null }
   },
   i: S,
   iframe: {
