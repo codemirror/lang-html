@@ -362,7 +362,8 @@ const GlobalAttrs: AttrSpec = {
 const AllTags = Object.keys(Tags)
 const GlobalAttrNames = Object.keys(GlobalAttrs)
 
-function elementName(doc: Text, tree: SyntaxNode) {
+export function elementName(doc: Text, tree: SyntaxNode | null | undefined) {
+  if (!tree) return ""
   let tag = tree.firstChild
   let name = tag && tag.getChild("TagName")
   return name ? doc.sliceString(name.from, name.to) : ""
@@ -377,8 +378,7 @@ function findParentElement(tree: SyntaxNode, skip = false) {
 }
 
 function allowedChildren(doc: Text, tree: SyntaxNode) {
-  let parent = findParentElement(tree, true)
-  let parentInfo = parent ? Tags[elementName(doc, parent)] : null
+  let parentInfo = Tags[elementName(doc, findParentElement(tree, true))]
   return parentInfo?.children || AllTags
 }
 
