@@ -1,3 +1,9 @@
+## 0.19.2 (2021-09-21)
+
+### New features
+
+The new `autoCloseTags` extension (included by default in `html()`) finishes closing tags when you type a `>` or `/` character.
+
 ## 0.19.1 (2021-08-11)
 
 ### Bug fixes
