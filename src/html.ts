@@ -74,7 +74,8 @@ export const htmlLanguage = LRLanguage.define({
   }),
   languageData: {
     commentTokens: {block: {open: "<!--", close: "-->"}},
-    indentOnInput: /^\s*<\/\w+\W$/
+    indentOnInput: /^\s*<\/\w+\W$/,
+    wordChars: "-._"
   }
 })
 
