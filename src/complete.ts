@@ -455,7 +455,9 @@ function completeAttrValue(state: EditorState, tree: SyntaxNode, from: number, t
   return {from, to, options, span}
 }
 
-export function completeHTML(context: CompletionContext): CompletionResult | null {
+/// HTML tag completion. Opens and closes tags and attributes in a
+/// context-aware way.
+export function htmlCompletionSource(context: CompletionContext): CompletionResult | null {
   let {state, pos} = context, around = syntaxTree(state).resolveInner(pos), tree = around.resolve(pos, -1)
   for (let scan = pos, before; around == tree && (before = tree.childBefore(scan));) {
     let last = before.lastChild

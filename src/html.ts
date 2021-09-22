@@ -5,7 +5,8 @@ import {EditorView} from "@codemirror/view"
 import {EditorSelection} from "@codemirror/state"
 import {LRLanguage, indentNodeProp, foldNodeProp, LanguageSupport, syntaxTree} from "@codemirror/language"
 import {styleTags, tags as t} from "@codemirror/highlight"
-import {completeHTML, elementName} from "./complete"
+import {htmlCompletionSource, elementName} from "./complete"
+export {htmlCompletionSource} from "./complete"
 
 /// A language provider based on the [Lezer HTML
 /// parser](https://github.com/lezer-parser/html), extended with the
@@ -79,9 +80,8 @@ export const htmlLanguage = LRLanguage.define({
   }
 })
 
-/// HTML tag completion. Opens and closes tags and attributes in a
-/// context-aware way.
-export const htmlCompletion = htmlLanguage.data.of({autocomplete: completeHTML})
+// FIXME remove on next major version
+export const htmlCompletion = htmlLanguage.data.of({autocomplete: htmlCompletionSource})
 
 /// Language support for HTML, including
 /// [`htmlCompletion`](#lang-html.htmlCompletion) and JavaScript and
