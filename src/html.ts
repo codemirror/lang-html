@@ -46,13 +46,12 @@ export const htmlLanguage = LRLanguage.define({
         }
       }),
       styleTags({
-        AttributeValue: t.string,
         "Text RawText": t.content,
         "StartTag StartCloseTag SelfCloserEndTag EndTag SelfCloseEndTag": t.angleBracket,
         TagName: t.tagName,
         "MismatchedCloseTag/TagName": [t.tagName,  t.invalid],
-        AttributeName: t.propertyName,
-        UnquotedAttributeValue: t.string,
+        AttributeName: t.attributeName,
+        "AttributeValue UnquotedAttributeValue": t.attributeValue,
         Is: t.definitionOperator,
         "EntityReference CharacterReference": t.character,
         Comment: t.blockComment,
