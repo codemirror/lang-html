@@ -1,3 +1,11 @@
+## 0.19.3 (2021-09-23)
+
+### New features
+
+The package now exports a completion source function, rather than a prebuilt completion extension.
+
+Use more specific highlighting tags for attribute names and values.
+
 ## 0.19.2 (2021-09-21)
 
 ### New features
