@@ -362,11 +362,11 @@ const GlobalAttrs: AttrSpec = {
 const AllTags = Object.keys(Tags)
 const GlobalAttrNames = Object.keys(GlobalAttrs)
 
-export function elementName(doc: Text, tree: SyntaxNode | null | undefined) {
+export function elementName(doc: Text, tree: SyntaxNode | null | undefined, max = doc.length) {
   if (!tree) return ""
   let tag = tree.firstChild
   let name = tag && tag.getChild("TagName")
-  return name ? doc.sliceString(name.from, name.to) : ""
+  return name ? doc.sliceString(name.from, Math.min(name.to, max)) : ""
 }
 
 function findParentElement(tree: SyntaxNode, skip = false) {

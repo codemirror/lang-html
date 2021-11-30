@@ -112,16 +112,16 @@ export const autoCloseTags = EditorView.inputHandler.of((view, from, to, text) =
       !htmlLanguage.isActiveAt(view.state, from, -1)) return false
   let {state} = view
   let changes = state.changeByRange(range => {
-    let around = syntaxTree(state).resolveInner(range.head, -1), name
+    let {head} = range, around = syntaxTree(state).resolveInner(head, -1), name
     if (around.name == "TagName" || around.name == "StartTag") around = around.parent!
     if (text == ">" && around.name == "OpenTag") {
-      if (around.parent?.lastChild?.name != "CloseTag" && (name = elementName(state.doc, around.parent)))
-        return {range: EditorSelection.cursor(range.head + 1), changes: {from: range.head, insert: `></${name}>`}}
+      if (around.parent?.lastChild?.name != "CloseTag" && (name = elementName(state.doc, around.parent, head)))
+        return {range: EditorSelection.cursor(head + 1), changes: {from: head, insert: `></${name}>`}}
     } else if (text == "/" && around.name == "OpenTag") {
       let empty = around.parent, base = empty?.parent
-      if (empty!.from == range.head - 1 && base!.lastChild?.name != "CloseTag" && (name = elementName(state.doc, base))) {
+      if (empty!.from == head - 1 && base!.lastChild?.name != "CloseTag" && (name = elementName(state.doc, base, head))) {
         let insert = `/${name}>`
-        return {range: EditorSelection.cursor(range.head + insert.length), changes: {from: range.head, insert}}
+        return {range: EditorSelection.cursor(head + insert.length), changes: {from: head, insert}}
       }
     }
     return {range}
