@@ -1,6 +1,6 @@
 {
   "name": "@codemirror/lang-html",
-  "version": "0.19.3",
+  "version": "0.19.4",
   "description": "HTML language support for the CodeMirror code editor",
   "scripts": {
     "test": "cm-runtests",

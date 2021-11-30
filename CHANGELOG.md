@@ -1,3 +1,9 @@
+## 0.19.4 (2021-11-30)
+
+### Bug fixes
+
+Fix an issue where autoclosing a tag directly in front of alphanumeric text would include nonsense text in the completed tag name.
+
 ## 0.19.3 (2021-09-23)
 
 ### New features
