@@ -236,6 +236,7 @@ const Tags: TagSpec = {
       multiple: ["multiple"]
     }
   },
+  slot: {attrs: { name: null }},
   small: S,
   source: { attrs: { src: null, type: null, media: null } },
   span: S,
@@ -254,6 +255,7 @@ const Tags: TagSpec = {
   table: S,
   tbody: S,
   td: { attrs: { colspan: null, rowspan: null, headers: null } },
+  template: S,
   textarea: {
     attrs: {
       dirname: null, form: null, maxlength: null, name: null, placeholder: null,
