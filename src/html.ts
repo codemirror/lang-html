@@ -4,7 +4,6 @@ import {javascriptLanguage, javascript} from "@codemirror/lang-javascript"
 import {EditorView} from "@codemirror/view"
 import {EditorSelection} from "@codemirror/state"
 import {LRLanguage, indentNodeProp, foldNodeProp, LanguageSupport, syntaxTree} from "@codemirror/language"
-import {styleTags, tags as t} from "@codemirror/highlight"
 import {htmlCompletionSource, elementName} from "./complete"
 export {htmlCompletionSource} from "./complete"
 
@@ -44,19 +43,6 @@ export const htmlLanguage = LRLanguage.define({
           if (!first || first.name != "OpenTag") return null
           return {from: first.to, to: last.name == "CloseTag" ? last.from : node.to}
         }
-      }),
-      styleTags({
-        "Text RawText": t.content,
-        "StartTag StartCloseTag SelfCloserEndTag EndTag SelfCloseEndTag": t.angleBracket,
-        TagName: t.tagName,
-        "MismatchedCloseTag/TagName": [t.tagName,  t.invalid],
-        AttributeName: t.attributeName,
-        "AttributeValue UnquotedAttributeValue": t.attributeValue,
-        Is: t.definitionOperator,
-        "EntityReference CharacterReference": t.character,
-        Comment: t.blockComment,
-        ProcessingInst: t.processingInstruction,
-        DoctypeDecl: t.documentMeta
       })
     ],
     wrap: configureNesting([
