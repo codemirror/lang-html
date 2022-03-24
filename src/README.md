@@ -25,6 +25,6 @@ to communication around the project.
 
 @htmlLanguage
 
-@htmlCompletion
+@htmlCompletionSource
 
 @autoCloseTags

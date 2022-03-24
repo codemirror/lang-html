@@ -65,9 +65,6 @@ export const htmlLanguage = LRLanguage.define({
   }
 })
 
-// FIXME remove on next major version
-export const htmlCompletion = htmlLanguage.data.of({autocomplete: htmlCompletionSource})
-
 /// Language support for HTML, including
 /// [`htmlCompletion`](#lang-html.htmlCompletion) and JavaScript and
 /// CSS support extensions.
@@ -84,7 +81,7 @@ export function html(config: {
   let lang = htmlLanguage
   if (config.matchClosingTags === false) lang = lang.configure({dialect: "noMatch"})
   return new LanguageSupport(lang, [
-    htmlCompletion,
+    htmlLanguage.data.of({autocomplete: htmlCompletionSource}),
     config.autoCloseTags !== false ? autoCloseTags: [],
     javascript().support,
     css().support
