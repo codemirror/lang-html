@@ -395,21 +395,21 @@ function openTags(doc: Text, tree: SyntaxNode) {
   return open
 }
 
-const identifier = /^[:\-\.\w\u00b7-\uffff]+$/
+const identifier = /^[:\-\.\w\u00b7-\uffff]*$/
 
 function completeTag(state: EditorState, tree: SyntaxNode, from: number, to: number) {
   let end = /\s*>/.test(state.sliceDoc(to, to + 5)) ? "" : ">"
   return {from, to,
           options: allowedChildren(state.doc, tree).map(tagName => ({label: tagName, type: "type"})).concat(
             openTags(state.doc, tree).map((tag, i) => ({label: "/" + tag, apply: "/" + tag + end, type: "type", boost: 99 - i}))),
-          span: /^\/?[:\-\.\w\u00b7-\uffff]*$/}
+          validFor: /^\/?[:\-\.\w\u00b7-\uffff]*$/}
 }
 
 function completeCloseTag(state: EditorState, tree: SyntaxNode, from: number, to: number) {
   let end = /\s*>/.test(state.sliceDoc(to, to + 5)) ? "" : ">"
   return {from, to,
           options: openTags(state.doc, tree).map((tag, i) => ({label: tag, apply: tag + end, type: "type", boost: 99 - i})),
-          span: identifier}
+          validFor: identifier}
 }
 
 function completeStartTag(state: EditorState, tree: SyntaxNode, pos: number) {
@@ -418,7 +418,7 @@ function completeStartTag(state: EditorState, tree: SyntaxNode, pos: number) {
     options.push({label: "<" + tagName, type: "type"})
   for (let open of openTags(state.doc, tree))
     options.push({label: "</" + open + ">", type: "type", boost: 99 - level++})
-  return {from: pos, to: pos, options, span: /^<\/?[:\-\.\w\u00b7-\uffff]*$/}
+  return {from: pos, to: pos, options, validFor: /^<\/?[:\-\.\w\u00b7-\uffff]*$/}
 }
 
 function completeAttrName(state: EditorState, tree: SyntaxNode, from: number, to: number) {
@@ -426,12 +426,12 @@ function completeAttrName(state: EditorState, tree: SyntaxNode, from: number, to
   let names = (info && info.attrs ? Object.keys(info.attrs).concat(GlobalAttrNames) : GlobalAttrNames)
   return {from, to,
           options: names.map(attrName => ({label: attrName, type: "property"})),
-          span: identifier}
+          validFor: identifier}
 }
 
 function completeAttrValue(state: EditorState, tree: SyntaxNode, from: number, to: number) {
   let nameNode = tree.parent?.getChild("AttributeName")
-  let options = [], span = undefined
+  let options = [], token = undefined
   if (nameNode) {
     let attrName = state.sliceDoc(nameNode.from, nameNode.to)
     let attrs: readonly string[] | null | undefined = GlobalAttrs[attrName]
@@ -442,19 +442,19 @@ function completeAttrValue(state: EditorState, tree: SyntaxNode, from: number, t
     if (attrs) {
       let base = state.sliceDoc(from, to).toLowerCase(), quoteStart = '"', quoteEnd = '"'
       if (/^['"]/.test(base)) {
-        span = base[0] == '"' ? /^[^"]*$/ : /^[^']*$/
+        token = base[0] == '"' ? /^[^"]*$/ : /^[^']*$/
         quoteStart = ""
         quoteEnd = state.sliceDoc(to, to + 1) == base[0] ? "" : base[0]
         base = base.slice(1)
         from++
       } else {
-        span = /^[^\s<>='"]*$/
+        token = /^[^\s<>='"]*$/
       }
       for (let value of attrs)
         options.push({label: value, apply: quoteStart + value + quoteEnd, type: "constant"})
     }
   }
-  return {from, to, options, span}
+  return {from, to, options, validFor: token}
 }
 
 /// HTML tag completion. Opens and closes tags and attributes in a
