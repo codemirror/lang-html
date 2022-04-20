@@ -1,3 +1,9 @@
+## 0.20.0 (2022-04-20)
+
+### New features
+
+Autocompletion now suggests the `<template>` and `<slot>` elements.
+
 ## 0.19.4 (2021-11-30)
 
 ### Bug fixes
