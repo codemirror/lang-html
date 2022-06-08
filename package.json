@@ -1,6 +1,6 @@
 {
   "name": "@codemirror/lang-html",
-  "version": "0.20.0",
+  "version": "6.0.0",
   "description": "HTML language support for the CodeMirror code editor",
   "scripts": {
     "test": "cm-runtests",
@@ -26,13 +26,13 @@
   "sideEffects": false,
   "license": "MIT",
   "dependencies": {
-    "@codemirror/autocomplete": "^0.20.0",
-    "@codemirror/lang-css": "^0.20.0",
-    "@codemirror/lang-javascript": "^0.20.0",
-    "@codemirror/language": "^0.20.0",
-    "@codemirror/state": "^0.20.0",
-    "@lezer/html": "^0.16.0",
-    "@lezer/common": "^0.16.0"
+    "@codemirror/autocomplete": "^6.0.0",
+    "@codemirror/lang-css": "^6.0.0",
+    "@codemirror/lang-javascript": "^6.0.0",
+    "@codemirror/language": "^6.0.0",
+    "@codemirror/state": "^6.0.0",
+    "@lezer/html": "^1.0.0",
+    "@lezer/common": "^1.0.0"
   },
   "devDependencies": {
     "@codemirror/buildhelper": "^0.1.5"
