@@ -2,14 +2,14 @@
 
 # @codemirror/lang-html [![NPM version](https://img.shields.io/npm/v/@codemirror/lang-html.svg)](https://www.npmjs.org/package/@codemirror/lang-html)
 
-[ [**WEBSITE**](https://codemirror.net/6/) | [**ISSUES**](https://github.com/codemirror/codemirror.next/issues) | [**FORUM**](https://discuss.codemirror.net/c/next/) | [**CHANGELOG**](https://github.com/codemirror/lang-html/blob/main/CHANGELOG.md) ]
+[ [**WEBSITE**](https://codemirror.net/) | [**ISSUES**](https://github.com/codemirror/codemirror.next/issues) | [**FORUM**](https://discuss.codemirror.net/c/next/) | [**CHANGELOG**](https://github.com/codemirror/lang-html/blob/main/CHANGELOG.md) ]
 
 This package implements HTML language support for the
-[CodeMirror](https://codemirror.net/6/) code editor.
+[CodeMirror](https://codemirror.net/) code editor.
 
-The [project page](https://codemirror.net/6/) has more information, a
-number of [examples](https://codemirror.net/6/examples/) and the
-[documentation](https://codemirror.net/6/docs/).
+The [project page](https://codemirror.net/) has more information, a
+number of [examples](https://codemirror.net/examples/) and the
+[documentation](https://codemirror.net/docs/).
 
 This code is released under an
 [MIT license](https://github.com/codemirror/lang-html/tree/main/LICENSE).
@@ -23,7 +23,7 @@ to communication around the project.
 
 <dl>
 <dt id="user-content-html">
-  <code><strong><a href="#user-content-html">html</a></strong>(<a id="user-content-html^config" href="#user-content-html^config">config</a>&#8288;?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a> = {}) → <a href="https://codemirror.net/6/docs/ref#language.LanguageSupport">LanguageSupport</a></code></dt>
+  <code><strong><a href="#user-content-html">html</a></strong>(<a id="user-content-html^config" href="#user-content-html^config">config</a>&#8288;?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a> = {}) → <a href="https://codemirror.net/docs/ref#language.LanguageSupport">LanguageSupport</a></code></dt>
 
 <dd><p>Language support for HTML, including
 <a href="#user-content-htmlcompletion"><code>htmlCompletion</code></a> and JavaScript and
@@ -45,7 +45,7 @@ document).</p>
 is included in the support extensions. Defaults to true.</p>
 </dd></dl></dd></dl></dd>
 <dt id="user-content-htmllanguage">
-  <code><strong><a href="#user-content-htmllanguage">htmlLanguage</a></strong>: <a href="https://codemirror.net/6/docs/ref#language.LRLanguage">LRLanguage</a></code></dt>
+  <code><strong><a href="#user-content-htmllanguage">htmlLanguage</a></strong>: <a href="https://codemirror.net/docs/ref#language.LRLanguage">LRLanguage</a></code></dt>
 
 <dd><p>A language provider based on the <a href="https://github.com/lezer-parser/html">Lezer HTML
 parser</a>, extended with the
@@ -53,13 +53,13 @@ JavaScript and CSS parsers to parse the content of <code>&lt;script&gt;</code> a
 <code>&lt;style&gt;</code> tags.</p>
 </dd>
 <dt id="user-content-htmlcompletion">
-  <code><strong><a href="#user-content-htmlcompletion">htmlCompletion</a></strong>: <a href="https://codemirror.net/6/docs/ref#state.Extension">Extension</a></code></dt>
+  <code><strong><a href="#user-content-htmlcompletion">htmlCompletion</a></strong>: <a href="https://codemirror.net/docs/ref#state.Extension">Extension</a></code></dt>
 
 <dd><p>HTML tag completion. Opens and closes tags and attributes in a
 context-aware way.</p>
 </dd>
 <dt id="user-content-autoclosetags">
-  <code><strong><a href="#user-content-autoclosetags">autoCloseTags</a></strong>: <a href="https://codemirror.net/6/docs/ref#state.Extension">Extension</a></code></dt>
+  <code><strong><a href="#user-content-autoclosetags">autoCloseTags</a></strong>: <a href="https://codemirror.net/docs/ref#state.Extension">Extension</a></code></dt>
 
 <dd><p>Extension that will automatically insert close tags when a <code>&gt;</code> or
 <code>/</code> is typed.</p>
