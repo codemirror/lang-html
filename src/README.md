@@ -27,4 +27,8 @@ to communication around the project.
 
 @htmlCompletionSource
 
+@TagSpec
+
+@htmlCompletionSourceWith
+
 @autoCloseTags

@@ -4,8 +4,8 @@ import {javascriptLanguage, javascript} from "@codemirror/lang-javascript"
 import {EditorView} from "@codemirror/view"
 import {EditorSelection} from "@codemirror/state"
 import {LRLanguage, indentNodeProp, foldNodeProp, LanguageSupport, syntaxTree} from "@codemirror/language"
-import {htmlCompletionSource, elementName} from "./complete"
-export {htmlCompletionSource} from "./complete"
+import {elementName, htmlCompletionSourceWith, TagSpec} from "./complete"
+export {htmlCompletionSource, TagSpec, htmlCompletionSourceWith} from "./complete"
 
 /// A language provider based on the [Lezer HTML
 /// parser](https://github.com/lezer-parser/html), extended with the
@@ -77,11 +77,15 @@ export function html(config: {
   /// Determines whether [`autoCloseTags`](#lang-html.autoCloseTags)
   /// is included in the support extensions. Defaults to true.
   autoCloseTags?: boolean,
+  /// Add additional tags that can be completed.
+  extraTags?: Record<string, TagSpec>,
+  /// Add additional completable attributes to all tags.
+  extraGlobalAttributes?: Record<string, null | readonly string[]>,
 } = {}) {
   let lang = htmlLanguage
   if (config.matchClosingTags === false) lang = lang.configure({dialect: "noMatch"})
   return new LanguageSupport(lang, [
-    htmlLanguage.data.of({autocomplete: htmlCompletionSource}),
+    htmlLanguage.data.of({autocomplete: htmlCompletionSourceWith(config)}),
     config.autoCloseTags !== false ? autoCloseTags: [],
     javascript().support,
     css().support
@@ -112,4 +116,4 @@ export const autoCloseTags = EditorView.inputHandler.of((view, from, to, text) =
   if (changes.changes.empty) return false
   view.dispatch(changes, {userEvent: "input.type", scrollIntoView: true})
   return true
-});
+})

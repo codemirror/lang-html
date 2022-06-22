@@ -3,8 +3,16 @@ import {syntaxTree} from "@codemirror/language"
 import {CompletionContext, CompletionResult} from "@codemirror/autocomplete"
 import {SyntaxNode} from "@lezer/common"
 
-type AttrSpec = {[attrName: string]: null | readonly string[]}
-type TagSpec = {[tagName: string]: {attrs?: AttrSpec, children?: readonly string[]}}
+/// Type used to specify tags to complete.
+export interface TagSpec {
+  /// Define tag-specific attributes. Property names are attribute
+  /// names, and property values can be null to indicate free-form
+  /// attributes, or a list of strings for suggested attribute values.
+  attrs?: Record<string, null | readonly string[]>,
+  /// Can be used to specify a list of child tags that are valid
+  /// inside this tag. The default is to allow any tag.
+  children?: readonly string[]
+}
 
 const Targets = ["_blank", "_self", "_top", "_parent"]
 const Charsets = ["ascii", "utf-8", "utf-16", "latin1", "latin1"]
@@ -14,7 +22,7 @@ const Bool = ["true", "false"]
 
 const S: TagSpec = {} // Empty tag spec
 
-const Tags: TagSpec = {
+const Tags: Record<string, TagSpec> = {
   a: {
     attrs: {
       href: null, ping: null, type: null,
@@ -298,7 +306,7 @@ const Tags: TagSpec = {
   wbr: S
 }
 
-const GlobalAttrs: AttrSpec = {
+const GlobalAttrs: Record<string, null | readonly string[]> = {
   accesskey: null,
   class: null,
   contenteditable: Bool,
@@ -361,8 +369,21 @@ const GlobalAttrs: AttrSpec = {
   "aria-valuetext": null
 }
 
-const AllTags = Object.keys(Tags)
-const GlobalAttrNames = Object.keys(GlobalAttrs)
+export class Schema {
+  tags: Record<string, TagSpec>
+  globalAttrs: Record<string, null | readonly string[]>
+  allTags: readonly string[]
+  globalAttrNames: readonly string[]
+
+  constructor(extraTags?: Record<string, TagSpec>, extraAttrs?: Record<string, null | readonly string[]>) {
+    this.tags = {...Tags, ...extraTags}
+    this.globalAttrs = {...GlobalAttrs, ...extraAttrs}
+    this.allTags = Object.keys(this.tags)
+    this.globalAttrNames = Object.keys(this.globalAttrs)
+  }
+
+  static default = new Schema
+}
 
 export function elementName(doc: Text, tree: SyntaxNode | null | undefined, max = doc.length) {
   if (!tree) return ""
@@ -379,9 +400,9 @@ function findParentElement(tree: SyntaxNode, skip = false) {
   return null
 }
 
-function allowedChildren(doc: Text, tree: SyntaxNode) {
-  let parentInfo = Tags[elementName(doc, findParentElement(tree, true))]
-  return parentInfo?.children || AllTags
+function allowedChildren(doc: Text, tree: SyntaxNode, schema: Schema) {
+  let parentInfo = schema.tags[elementName(doc, findParentElement(tree, true))]
+  return parentInfo?.children || schema.allTags
 }
 
 function openTags(doc: Text, tree: SyntaxNode) {
@@ -397,11 +418,12 @@ function openTags(doc: Text, tree: SyntaxNode) {
 
 const identifier = /^[:\-\.\w\u00b7-\uffff]*$/
 
-function completeTag(state: EditorState, tree: SyntaxNode, from: number, to: number) {
+function completeTag(state: EditorState, schema: Schema, tree: SyntaxNode, from: number, to: number) {
   let end = /\s*>/.test(state.sliceDoc(to, to + 5)) ? "" : ">"
   return {from, to,
-          options: allowedChildren(state.doc, tree).map(tagName => ({label: tagName, type: "type"})).concat(
-            openTags(state.doc, tree).map((tag, i) => ({label: "/" + tag, apply: "/" + tag + end, type: "type", boost: 99 - i}))),
+          options: allowedChildren(state.doc, tree, schema).map(tagName => ({label: tagName, type: "type"})).concat(
+            openTags(state.doc, tree).map((tag, i) => ({label: "/" + tag, apply: "/" + tag + end,
+                                                        type: "type", boost: 99 - i}))),
           validFor: /^\/?[:\-\.\w\u00b7-\uffff]*$/}
 }
 
@@ -412,31 +434,31 @@ function completeCloseTag(state: EditorState, tree: SyntaxNode, from: number, to
           validFor: identifier}
 }
 
-function completeStartTag(state: EditorState, tree: SyntaxNode, pos: number) {
+function completeStartTag(state: EditorState, schema: Schema, tree: SyntaxNode, pos: number) {
   let options = [], level = 0
-  for (let tagName of allowedChildren(state.doc, tree))
+  for (let tagName of allowedChildren(state.doc, tree, schema))
     options.push({label: "<" + tagName, type: "type"})
   for (let open of openTags(state.doc, tree))
     options.push({label: "</" + open + ">", type: "type", boost: 99 - level++})
   return {from: pos, to: pos, options, validFor: /^<\/?[:\-\.\w\u00b7-\uffff]*$/}
 }
 
-function completeAttrName(state: EditorState, tree: SyntaxNode, from: number, to: number) {
-  let elt = findParentElement(tree), info = elt ? Tags[elementName(state.doc, elt)] : null
-  let names = (info && info.attrs ? Object.keys(info.attrs).concat(GlobalAttrNames) : GlobalAttrNames)
+function completeAttrName(state: EditorState, schema: Schema, tree: SyntaxNode, from: number, to: number) {
+  let elt = findParentElement(tree), info = elt ? schema.tags[elementName(state.doc, elt)] : null
+  let names = (info && info.attrs ? Object.keys(info.attrs).concat(schema.globalAttrNames) : schema.globalAttrNames)
   return {from, to,
           options: names.map(attrName => ({label: attrName, type: "property"})),
           validFor: identifier}
 }
 
-function completeAttrValue(state: EditorState, tree: SyntaxNode, from: number, to: number) {
+function completeAttrValue(state: EditorState, schema: Schema, tree: SyntaxNode, from: number, to: number) {
   let nameNode = tree.parent?.getChild("AttributeName")
   let options = [], token = undefined
   if (nameNode) {
     let attrName = state.sliceDoc(nameNode.from, nameNode.to)
-    let attrs: readonly string[] | null | undefined = GlobalAttrs[attrName]
+    let attrs: readonly string[] | null | undefined = schema.globalAttrs[attrName]
     if (!attrs) {
-      let elt = findParentElement(tree), info = elt ? Tags[elementName(state.doc, elt)] : null
+      let elt = findParentElement(tree), info = elt ? schema.tags[elementName(state.doc, elt)] : null
       attrs = info?.attrs && info.attrs[attrName]
     }
     if (attrs) {
@@ -457,9 +479,7 @@ function completeAttrValue(state: EditorState, tree: SyntaxNode, from: number, t
   return {from, to, options, validFor: token}
 }
 
-/// HTML tag completion. Opens and closes tags and attributes in a
-/// context-aware way.
-export function htmlCompletionSource(context: CompletionContext): CompletionResult | null {
+function htmlCompletionFor(schema: Schema, context: CompletionContext): CompletionResult | null {
   let {state, pos} = context, around = syntaxTree(state).resolveInner(pos), tree = around.resolve(pos, -1)
   for (let scan = pos, before; around == tree && (before = tree.childBefore(scan));) {
     let last = before.lastChild
@@ -469,18 +489,38 @@ export function htmlCompletionSource(context: CompletionContext): CompletionResu
   }
   if (tree.name == "TagName") {
     return tree.parent && /CloseTag$/.test(tree.parent.name) ? completeCloseTag(state, tree, tree.from, pos)
-      : completeTag(state, tree, tree.from, pos)
+      : completeTag(state, schema, tree, tree.from, pos)
   } else if (tree.name == "StartTag") {
-    return completeTag(state, tree, pos, pos)
+    return completeTag(state, schema, tree, pos, pos)
   } else if (tree.name == "StartCloseTag" || tree.name == "IncompleteCloseTag") {
     return completeCloseTag(state, tree, pos, pos)
   } else if (context.explicit && (tree.name == "OpenTag" || tree.name == "SelfClosingTag") || tree.name == "AttributeName") {
-    return completeAttrName(state, tree, tree.name == "AttributeName" ? tree.from : pos, pos)
+    return completeAttrName(state, schema, tree, tree.name == "AttributeName" ? tree.from : pos, pos)
   } else if (tree.name == "Is" || tree.name == "AttributeValue" || tree.name == "UnquotedAttributeValue") {
-    return completeAttrValue(state, tree, tree.name == "Is" ? pos : tree.from, pos)
+    return completeAttrValue(state, schema, tree, tree.name == "Is" ? pos : tree.from, pos)
   } else if (context.explicit && (around.name == "Element" || around.name == "Text" || around.name == "Document")) {
-    return completeStartTag(state, tree, pos)
+    return completeStartTag(state, schema, tree, pos)
   } else {
     return null
   }
 }
+
+/// HTML tag completion. Opens and closes tags and attributes in a
+/// context-aware way.
+export function htmlCompletionSource(context: CompletionContext) {
+  return htmlCompletionFor(Schema.default, context)
+}
+
+/// Create a completion source for HTML extended with additional tags
+/// or attributes.
+export function htmlCompletionSourceWith(config: {
+  /// Define extra tag names to complete.
+  extraTags?: Record<string, TagSpec>,
+  /// Add global attributes that are available on all tags.
+  extraGlobalAttributes?: Record<string, null | readonly string[]>
+}) {
+  let {extraTags, extraGlobalAttributes: extraAttrs} = config
+  let schema = extraAttrs || extraTags ? new Schema(extraTags, extraAttrs) : Schema.default
+  return (context: CompletionContext) => htmlCompletionFor(schema, context)
+}
+
