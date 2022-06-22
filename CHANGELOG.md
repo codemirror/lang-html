@@ -1,3 +1,9 @@
+## 6.1.0 (2022-06-22)
+
+### New features
+
+It is now possible to pass in options to extend the set of tags and attributes provided by autocompletion.
+
 ## 6.0.0 (2022-06-08)
 
 ### Breaking changes
