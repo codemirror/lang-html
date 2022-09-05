@@ -1,3 +1,9 @@
+## 6.1.1 (2022-09-05)
+
+### Bug fixes
+
+Properly list the dependency on @codemirror/view in package.json.
+
 ## 6.1.0 (2022-06-22)
 
 ### New features
