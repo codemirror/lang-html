@@ -1,3 +1,9 @@
+## 6.1.2 (2022-09-27)
+
+### Bug fixes
+
+Make tag auto-closing consume `>` characters after the cursor.
+
 ## 6.1.1 (2022-09-05)
 
 ### Bug fixes
