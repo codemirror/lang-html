@@ -32,9 +32,7 @@ const Tags: Record<string, TagSpec> = {
     }
   },
   abbr: S,
-  acronym: S,
   address: S,
-  applet: S,
   area: {
     attrs: {
       alt: null, coords: null, href: null, target: null, ping: null,
@@ -56,10 +54,8 @@ const Tags: Record<string, TagSpec> = {
   },
   b: S,
   base: { attrs: { href: null, target: Targets } },
-  basefont: S,
   bdi: S,
   bdo: S,
-  big: S,
   blockquote: { attrs: { cite: null } },
   body: S,
   br: S,
@@ -97,7 +93,6 @@ const Tags: Record<string, TagSpec> = {
   del: { attrs: { cite: null, datetime: null } },
   details: { attrs: { open: ["open"] } },
   dfn: S,
-  dir: S,
   div: S,
   dl: S,
   dt: S,
@@ -107,7 +102,6 @@ const Tags: Record<string, TagSpec> = {
   fieldset: { attrs: { disabled: ["disabled"], form: null, name: null } },
   figcaption: S,
   figure: S,
-  font: S,
   footer: S,
   form: {
     attrs: {
@@ -120,8 +114,6 @@ const Tags: Record<string, TagSpec> = {
       target: Targets
     }
   },
-  frame: S,
-  frameset: S,
   h1: S, h2: S, h3: S, h4: S, h5: S, h6: S,
   head: {
     children: ["title", "base", "link", "style", "meta", "script", "noscript", "command"]
@@ -203,7 +195,6 @@ const Tags: Record<string, TagSpec> = {
   },
   meter: { attrs: { value: null, min: null, low: null, high: null, max: null, optimum: null } },
   nav: S,
-  noframes: S,
   noscript: S,
   object: {
     attrs: {
@@ -224,7 +215,6 @@ const Tags: Record<string, TagSpec> = {
   rp: S,
   rt: S,
   ruby: S,
-  s: S,
   samp: S,
   script: {
     attrs: {
@@ -248,7 +238,6 @@ const Tags: Record<string, TagSpec> = {
   small: S,
   source: { attrs: { src: null, type: null, media: null } },
   span: S,
-  strike: S,
   strong: S,
   style: {
     attrs: {
@@ -288,8 +277,6 @@ const Tags: Record<string, TagSpec> = {
       srclang: null
     }
   },
-  tt: S,
-  u: S,
   ul: { children: ["li", "script", "template", "ul", "ol"] },
   var: S,
   video: {
