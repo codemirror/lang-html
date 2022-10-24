@@ -12,6 +12,7 @@ export {htmlCompletionSource, TagSpec, htmlCompletionSourceWith} from "./complet
 /// JavaScript and CSS parsers to parse the content of `<script>` and
 /// `<style>` tags.
 export const htmlLanguage = LRLanguage.define({
+  name: "html",
   parser: parser.configure({
     props: [
       indentNodeProp.add({
