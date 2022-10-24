@@ -1,3 +1,9 @@
+## 6.1.3 (2022-10-24)
+
+### Bug fixes
+
+Remove deprecated HTML tags from the completions.
+
 ## 6.1.2 (2022-09-27)
 
 ### Bug fixes
