@@ -1,6 +1,6 @@
 import {parser, configureNesting} from "@lezer/html"
 import {cssLanguage, css} from "@codemirror/lang-css"
-import {javascriptLanguage, javascript} from "@codemirror/lang-javascript"
+import {javascriptLanguage, typescriptLanguage, jsxLanguage, tsxLanguage, javascript} from "@codemirror/lang-javascript"
 import {EditorView} from "@codemirror/view"
 import {EditorSelection} from "@codemirror/state"
 import {LRLanguage, indentNodeProp, foldNodeProp, LanguageSupport, syntaxTree} from "@codemirror/language"
@@ -47,6 +47,15 @@ export const htmlLanguage = LRLanguage.define({
       })
     ],
     wrap: configureNesting([
+      {tag: "script",
+       attrs: attrs => attrs.type == "text/typescript" || attrs.lang == "ts",
+       parser: typescriptLanguage.parser},
+      {tag: "script",
+       attrs: attrs => attrs.type == "text/jsx",
+       parser: jsxLanguage.parser},
+      {tag: "script",
+       attrs: attrs => attrs.type == "text/typescript-jsx",
+       parser: tsxLanguage.parser},
       {tag: "script",
        attrs(attrs) {
          return !attrs.type || /^(?:text|application)\/(?:x-)?(?:java|ecma)script$|^module$|^$/i.test(attrs.type)
