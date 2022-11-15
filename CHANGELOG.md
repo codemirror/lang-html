@@ -1,3 +1,9 @@
+## 6.1.4 (2022-11-15)
+
+### Bug fixes
+
+Parse the content of text/javascript or lang=ts script tags as TypeScript, use JS for text/jsx, and TSX for text/typescript-jsx.
+
 ## 6.1.3 (2022-10-24)
 
 ### Bug fixes
