@@ -75,6 +75,10 @@ export function html(config: {
   /// expect to only be parsing a fragment of HTML text, not a full
   /// document).
   matchClosingTags?: boolean,
+  // By default, the parser does not allow arbitrary self-closing tags.
+  // Set this to `true` to turn on support for `/>` self-closing tag
+  // syntax.
+  selfClosingTags?: boolean,
   /// Determines whether [`autoCloseTags`](#lang-html.autoCloseTags)
   /// is included in the support extensions. Defaults to true.
   autoCloseTags?: boolean,
@@ -85,6 +89,7 @@ export function html(config: {
 } = {}) {
   let lang = htmlLanguage
   if (config.matchClosingTags === false) lang = lang.configure({dialect: "noMatch"})
+  if (config.selfClosingTags === true) lang = lang.configure({dialect: "selfClosing"})
   return new LanguageSupport(lang, [
     htmlLanguage.data.of({autocomplete: htmlCompletionSourceWith(config)}),
     config.autoCloseTags !== false ? autoCloseTags: [],
