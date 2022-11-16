@@ -1,3 +1,9 @@
+## 6.2.0 (2022-11-16)
+
+### New features
+
+Add a `selfClosingTags` option to `html` that enables `/>` syntax.
+
 ## 6.1.4 (2022-11-15)
 
 ### Bug fixes
