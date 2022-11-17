@@ -1,4 +1,5 @@
 import {parser, configureNesting} from "@lezer/html"
+import {Parser} from "@lezer/common"
 import {cssLanguage, css} from "@codemirror/lang-css"
 import {javascriptLanguage, typescriptLanguage, jsxLanguage, tsxLanguage, javascript} from "@codemirror/lang-javascript"
 import {EditorView} from "@codemirror/view"
@@ -6,6 +7,34 @@ import {EditorSelection} from "@codemirror/state"
 import {LRLanguage, indentNodeProp, foldNodeProp, LanguageSupport, syntaxTree} from "@codemirror/language"
 import {elementName, htmlCompletionSourceWith, TagSpec} from "./complete"
 export {htmlCompletionSource, TagSpec, htmlCompletionSourceWith} from "./complete"
+
+type NestedLang = {
+  tag: "script" | "style" | "textarea",
+  attrs?: (attrs: {[attr: string]: string}) => boolean,
+  parser: Parser
+}
+
+const defaultNesting: NestedLang[] = [
+  {tag: "script",
+   attrs: attrs => attrs.type == "text/typescript" || attrs.lang == "ts",
+   parser: typescriptLanguage.parser},
+  {tag: "script",
+   attrs: attrs => attrs.type == "text/jsx",
+   parser: jsxLanguage.parser},
+  {tag: "script",
+   attrs: attrs => attrs.type == "text/typescript-jsx",
+   parser: tsxLanguage.parser},
+  {tag: "script",
+   attrs(attrs) {
+     return !attrs.type || /^(?:text|application)\/(?:x-)?(?:java|ecma)script$|^module$|^$/i.test(attrs.type)
+   },
+   parser: javascriptLanguage.parser},
+  {tag: "style",
+   attrs(attrs) {
+     return (!attrs.lang || attrs.lang == "css") && (!attrs.type || /^(text\/)?(x-)?(stylesheet|css)$/i.test(attrs.type))
+   },
+   parser: cssLanguage.parser}
+]
 
 /// A language provider based on the [Lezer HTML
 /// parser](https://github.com/lezer-parser/html), extended with the
@@ -46,27 +75,7 @@ export const htmlLanguage = LRLanguage.define({
         }
       })
     ],
-    wrap: configureNesting([
-      {tag: "script",
-       attrs: attrs => attrs.type == "text/typescript" || attrs.lang == "ts",
-       parser: typescriptLanguage.parser},
-      {tag: "script",
-       attrs: attrs => attrs.type == "text/jsx",
-       parser: jsxLanguage.parser},
-      {tag: "script",
-       attrs: attrs => attrs.type == "text/typescript-jsx",
-       parser: tsxLanguage.parser},
-      {tag: "script",
-       attrs(attrs) {
-         return !attrs.type || /^(?:text|application)\/(?:x-)?(?:java|ecma)script$|^module$|^$/i.test(attrs.type)
-       },
-       parser: javascriptLanguage.parser},
-      {tag: "style",
-       attrs(attrs) {
-         return (!attrs.lang || attrs.lang == "css") && (!attrs.type || /^(text\/)?(x-)?(stylesheet|css)$/i.test(attrs.type))
-       },
-       parser: cssLanguage.parser}
-    ])
+    wrap: configureNesting(defaultNesting)
   }),
   languageData: {
     commentTokens: {block: {open: "<!--", close: "-->"}},
@@ -95,10 +104,18 @@ export function html(config: {
   extraTags?: Record<string, TagSpec>,
   /// Add additional completable attributes to all tags.
   extraGlobalAttributes?: Record<string, null | readonly string[]>,
+  /// Register additional languages to parse the content of script,
+  /// style, or textarea tags. If given, `attrs` should be a function
+  /// that, given an object representing the tag's attributes, returns
+  /// `true` if this language applies.
+  nestedLanguages?: NestedLang[]
 } = {}) {
-  let lang = htmlLanguage
-  if (config.matchClosingTags === false) lang = lang.configure({dialect: "noMatch"})
-  if (config.selfClosingTags === true) lang = lang.configure({dialect: "selfClosing"})
+  let dialect = "", wrap
+  if (config.matchClosingTags === false) dialect = "noMatch"
+  if (config.selfClosingTags === true) dialect = (dialect ? dialect + " " : "") + "selfClosing"
+  if (config.nestedLanguages && config.nestedLanguages.length)
+    wrap = configureNesting(config.nestedLanguages.concat(defaultNesting))
+  let lang = wrap || dialect ? htmlLanguage.configure({dialect, wrap}) : htmlLanguage
   return new LanguageSupport(lang, [
     htmlLanguage.data.of({autocomplete: htmlCompletionSourceWith(config)}),
     config.autoCloseTags !== false ? autoCloseTags: [],
