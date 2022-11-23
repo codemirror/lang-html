@@ -19,7 +19,7 @@ const defaultNesting: NestedLang[] = [
    attrs: attrs => attrs.type == "text/typescript" || attrs.lang == "ts",
    parser: typescriptLanguage.parser},
   {tag: "script",
-   attrs: attrs => attrs.type == "text/jsx",
+   attrs: attrs => attrs.type == "text/babel" || attrs.type == "text/jsx",
    parser: jsxLanguage.parser},
   {tag: "script",
    attrs: attrs => attrs.type == "text/typescript-jsx",
