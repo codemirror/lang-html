@@ -36,6 +36,19 @@ const defaultNesting: NestedLang[] = [
    parser: cssLanguage.parser}
 ]
 
+type NestedAttr = {
+  name: string,
+  tagName?: string,
+  parser: Parser
+}
+
+const defaultAttrs: NestedAttr[] = [
+  {name: "style",
+   parser: cssLanguage.parser.configure({top: "Styles"})}
+]
+for (let event of "copy cut paste focus blur change click mousedown mouseup keydown keyup scroll".split(" "))
+  defaultAttrs.push({name: "on" + event, parser: javascriptLanguage.parser})
+
 /// A language provider based on the [Lezer HTML
 /// parser](https://github.com/lezer-parser/html), extended with the
 /// JavaScript and CSS parsers to parse the content of `<script>` and
@@ -75,7 +88,7 @@ export const htmlLanguage = LRLanguage.define({
         }
       })
     ],
-    wrap: configureNesting(defaultNesting)
+    wrap: configureNesting(defaultNesting, defaultAttrs)
   }),
   languageData: {
     commentTokens: {block: {open: "<!--", close: "-->"}},
@@ -109,12 +122,16 @@ export function html(config: {
   /// that, given an object representing the tag's attributes, returns
   /// `true` if this language applies.
   nestedLanguages?: NestedLang[]
+  /// Register additional languages to parse attribute values with.
+  nestedAttributes?: NestedAttr[]
 } = {}) {
   let dialect = "", wrap
   if (config.matchClosingTags === false) dialect = "noMatch"
   if (config.selfClosingTags === true) dialect = (dialect ? dialect + " " : "") + "selfClosing"
-  if (config.nestedLanguages && config.nestedLanguages.length)
-    wrap = configureNesting(config.nestedLanguages.concat(defaultNesting))
+  if (config.nestedLanguages && config.nestedLanguages.length ||
+      config.nestedAttributes && config.nestedAttributes.length)
+    wrap = configureNesting((config.nestedLanguages || []).concat(defaultNesting),
+                            (config.nestedAttributes || []).concat(defaultAttrs))
   let lang = wrap || dialect ? htmlLanguage.configure({dialect, wrap}) : htmlLanguage
   return new LanguageSupport(lang, [
     htmlLanguage.data.of({autocomplete: htmlCompletionSourceWith(config)}),
