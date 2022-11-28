@@ -1,3 +1,15 @@
+## 6.3.0 (2022-11-28)
+
+### Bug fixes
+
+Parse type=text/babel script tags as JSX.
+
+### New features
+
+The new `nestedLanguages` option can be used to configure how the content of script, style, and textarea tags is parsed.
+
+The content of style attributes will now be parsed as CSS, and the content of on[event] attributes as JavaScript. The new `nestedAttributes` option can be used to configure the parsing of other attribute values.
+
 ## 6.2.0 (2022-11-16)
 
 ### New features
