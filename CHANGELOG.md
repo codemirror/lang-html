@@ -1,3 +1,9 @@
+## 6.3.1 (2022-11-29)
+
+### Bug fixes
+
+Remove incorrect pure annotation that broke the code after tree-shaking.
+
 ## 6.3.0 (2022-11-28)
 
 ### Bug fixes
