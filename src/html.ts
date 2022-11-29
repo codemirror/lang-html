@@ -45,11 +45,10 @@ type NestedAttr = {
 const defaultAttrs: NestedAttr[] = [
   {name: "style",
    parser: cssLanguage.parser.configure({top: "Styles"})}
-]
-for (let event of ("beforeunload copy cut dragstart dragover dragleave dragenter dragend " +
-                   "drag paste focus blur change click load mousedown mouseenter mouseleave " +
-                   "mouseup keydown keyup resize scroll unload").split(" "))
-  defaultAttrs.push({name: "on" + event, parser: javascriptLanguage.parser})
+].concat(("beforeunload copy cut dragstart dragover dragleave dragenter dragend " +
+          "drag paste focus blur change click load mousedown mouseenter mouseleave " +
+          "mouseup keydown keyup resize scroll unload").split(" ")
+            .map(event => ({name: "on" + event, parser: javascriptLanguage.parser})))
 
 /// A language provider based on the [Lezer HTML
 /// parser](https://github.com/lezer-parser/html), extended with the
