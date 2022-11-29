@@ -2,6 +2,7 @@ import {parser, configureNesting} from "@lezer/html"
 import {Parser} from "@lezer/common"
 import {cssLanguage, css} from "@codemirror/lang-css"
 import {javascriptLanguage, typescriptLanguage, jsxLanguage, tsxLanguage, javascript} from "@codemirror/lang-javascript"
+import {jsonLanguage, json} from "@codemirror/lang-json"
 import {EditorView} from "@codemirror/view"
 import {EditorSelection} from "@codemirror/state"
 import {LRLanguage, indentNodeProp, foldNodeProp, LanguageSupport, syntaxTree} from "@codemirror/language"
@@ -29,6 +30,9 @@ const defaultNesting: NestedLang[] = [
      return !attrs.type || /^(?:text|application)\/(?:x-)?(?:java|ecma)script$|^module$|^$/i.test(attrs.type)
    },
    parser: javascriptLanguage.parser},
+  {tag: "script",
+   attrs: attrs => attrs.type == "application/json" || attrs.type == "application/manifest+json",
+   parser: jsonLanguage.parser},
   {tag: "style",
    attrs(attrs) {
      return (!attrs.lang || attrs.lang == "css") && (!attrs.type || /^(text\/)?(x-)?(stylesheet|css)$/i.test(attrs.type))
@@ -99,8 +103,8 @@ export const htmlLanguage = LRLanguage.define({
 })
 
 /// Language support for HTML, including
-/// [`htmlCompletion`](#lang-html.htmlCompletion) and JavaScript and
-/// CSS support extensions.
+/// [`htmlCompletion`](#lang-html.htmlCompletion) and JavaScript, JSON,
+/// and CSS support extensions.
 export function html(config: {
   /// By default, the syntax tree will highlight mismatched closing
   /// tags. Set this to `false` to turn that off (for example when you
@@ -138,7 +142,8 @@ export function html(config: {
     htmlLanguage.data.of({autocomplete: htmlCompletionSourceWith(config)}),
     config.autoCloseTags !== false ? autoCloseTags: [],
     javascript().support,
-    css().support
+    css().support,
+    json().support
   ])
 }
 
@@ -162,7 +167,7 @@ export const autoCloseTags = EditorView.inputHandler.of((view, from, to, text) =
       if (empty!.from == head - 1 && base!.lastChild?.name != "CloseTag" && (name = elementName(state.doc, base, head))) {
         let hasRightBracket = view.state.doc.sliceString(head, head + 1) === ">"
         let insert = `/${name}${hasRightBracket ? "" : ">"}`
-        let pos = head + insert.length + (hasRightBracket ? 1 : 0) 
+        let pos = head + insert.length + (hasRightBracket ? 1 : 0)
         return {range: EditorSelection.cursor(pos), changes: {from: head, insert}}
       }
     }
