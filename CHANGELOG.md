@@ -1,3 +1,13 @@
+## 6.4.0 (2022-11-30)
+
+### Bug fixes
+
+Directly depend on @lang/css 1.1.0, since we're using a new top rule name introduced in that.
+
+### New features
+
+Add a `globalAttrs` property to (completion) `TagSpec` objects that controls whether global attributes are completed in that tag.
+
 ## 6.3.1 (2022-11-29)
 
 ### Bug fixes
