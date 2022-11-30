@@ -9,6 +9,8 @@ export interface TagSpec {
   /// names, and property values can be null to indicate free-form
   /// attributes, or a list of strings for suggested attribute values.
   attrs?: Record<string, null | readonly string[]>,
+  /// When set to false, don't complete global attributes on this tag.
+  globalAttrs?: boolean,
   /// Can be used to specify a list of child tags that are valid
   /// inside this tag. The default is to allow any tag.
   children?: readonly string[]
@@ -432,7 +434,9 @@ function completeStartTag(state: EditorState, schema: Schema, tree: SyntaxNode, 
 
 function completeAttrName(state: EditorState, schema: Schema, tree: SyntaxNode, from: number, to: number) {
   let elt = findParentElement(tree), info = elt ? schema.tags[elementName(state.doc, elt)] : null
-  let names = (info && info.attrs ? Object.keys(info.attrs).concat(schema.globalAttrNames) : schema.globalAttrNames)
+  let localAttrs = info && info.attrs ? Object.keys(info.attrs) : []
+  let names = info && info.globalAttrs === false ? localAttrs
+    : localAttrs.length ? localAttrs.concat(schema.globalAttrNames) : schema.globalAttrNames
   return {from, to,
           options: names.map(attrName => ({label: attrName, type: "property"})),
           validFor: identifier}
