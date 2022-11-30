@@ -58,6 +58,10 @@ is included in the support extensions. Defaults to true.</p>
 style, or textarea tags. If given, <code>attrs</code> should be a function
 that, given an object representing the tag's attributes, returns
 <code>true</code> if this language applies.</p>
+</dd><dt id="user-content-html^config.nestedattributes">
+  <code><strong><a href="#user-content-html^config.nestedattributes">nestedAttributes</a></strong>&#8288;?: {name: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, tagName&#8288;?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, parser: <a href="https://lezer.codemirror.net/docs/ref/#common.Parser">Parser</a>}[]</code></dt>
+
+<dd><p>Register additional languages to parse attribute values with.</p>
 </dd></dl></dd></dl></dd>
 <dt id="user-content-htmllanguage">
   <code><strong><a href="#user-content-htmllanguage">htmlLanguage</a></strong>: <a href="https://codemirror.net/docs/ref#language.LRLanguage">LRLanguage</a></code></dt>
