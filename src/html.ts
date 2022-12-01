@@ -5,7 +5,7 @@ import {javascriptLanguage, typescriptLanguage, jsxLanguage, tsxLanguage, javasc
 import {EditorView} from "@codemirror/view"
 import {EditorSelection} from "@codemirror/state"
 import {LRLanguage, indentNodeProp, foldNodeProp, LanguageSupport, syntaxTree} from "@codemirror/language"
-import {elementName, htmlCompletionSourceWith, TagSpec} from "./complete"
+import {elementName, htmlCompletionSourceWith, TagSpec, eventAttributes} from "./complete"
 export {htmlCompletionSource, TagSpec, htmlCompletionSourceWith} from "./complete"
 
 type NestedLang = {
@@ -45,10 +45,7 @@ type NestedAttr = {
 const defaultAttrs: NestedAttr[] = [
   {name: "style",
    parser: cssLanguage.parser.configure({top: "Styles"})}
-].concat(("beforeunload copy cut dragstart dragover dragleave dragenter dragend " +
-          "drag paste focus blur change click load mousedown mouseenter mouseleave " +
-          "mouseup keydown keyup resize scroll unload").split(" ")
-            .map(event => ({name: "on" + event, parser: javascriptLanguage.parser})))
+].concat(eventAttributes.map(name => ({name, parser: javascriptLanguage.parser})))
 
 /// A language provider based on the [Lezer HTML
 /// parser](https://github.com/lezer-parser/html), extended with the

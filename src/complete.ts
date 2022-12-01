@@ -319,7 +319,6 @@ const GlobalAttrs: Record<string, null | readonly string[]> = {
   tabindex: null,
   title: null,
   translate: ["yes", "no"],
-  onclick: null,
   rel: ["stylesheet", "alternate", "author", "bookmark", "help", "license", "next", "nofollow", "noreferrer", "prefetch", "prev", "search", "tag"],
   role: "alert application article banner button cell checkbox complementary contentinfo dialog document feed figure form grid gridcell heading img list listbox listitem main navigation region row rowgroup search switch tab table tabpanel textbox timer".split(" "),
   "aria-activedescendant": null,
@@ -357,6 +356,13 @@ const GlobalAttrs: Record<string, null | readonly string[]> = {
   "aria-valuenow": null,
   "aria-valuetext": null
 }
+
+export const eventAttributes = (
+  "beforeunload copy cut dragstart dragover dragleave dragenter dragend " +
+  "drag paste focus blur change click load mousedown mouseenter mouseleave " +
+  "mouseup keydown keyup resize scroll unload"
+).split(" ").map(n => "on" + n)
+for (let a of eventAttributes) GlobalAttrs[a] = null
 
 export class Schema {
   tags: Record<string, TagSpec>
