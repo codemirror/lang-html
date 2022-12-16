@@ -9,7 +9,7 @@ import {elementName, htmlCompletionSourceWith, TagSpec, eventAttributes} from ".
 export {htmlCompletionSource, TagSpec, htmlCompletionSourceWith} from "./complete"
 
 type NestedLang = {
-  tag: "script" | "style" | "textarea",
+  tag: string,
   attrs?: (attrs: {[attr: string]: string}) => boolean,
   parser: Parser
 }
@@ -115,10 +115,10 @@ export function html(config: {
   extraTags?: Record<string, TagSpec>,
   /// Add additional completable attributes to all tags.
   extraGlobalAttributes?: Record<string, null | readonly string[]>,
-  /// Register additional languages to parse the content of script,
-  /// style, or textarea tags. If given, `attrs` should be a function
-  /// that, given an object representing the tag's attributes, returns
-  /// `true` if this language applies.
+  /// Register additional languages to parse the content of specific
+  /// tags. If given, `attrs` should be a function that, given an
+  /// object representing the tag's attributes, returns `true` if this
+  /// language applies.
   nestedLanguages?: NestedLang[]
   /// Register additional languages to parse attribute values with.
   nestedAttributes?: NestedAttr[]
