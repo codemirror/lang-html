@@ -1,3 +1,9 @@
+## 6.4.1 (2023-01-12)
+
+### Bug fixes
+
+Use only the tag name for matching of opening and closing tags.
+
 ## 6.4.0 (2022-11-30)
 
 ### Bug fixes
