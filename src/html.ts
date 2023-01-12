@@ -4,7 +4,8 @@ import {cssLanguage, css} from "@codemirror/lang-css"
 import {javascriptLanguage, typescriptLanguage, jsxLanguage, tsxLanguage, javascript} from "@codemirror/lang-javascript"
 import {EditorView} from "@codemirror/view"
 import {EditorSelection} from "@codemirror/state"
-import {LRLanguage, indentNodeProp, foldNodeProp, LanguageSupport, syntaxTree} from "@codemirror/language"
+import {LRLanguage, indentNodeProp, foldNodeProp, LanguageSupport, syntaxTree,
+        bracketMatchingHandle} from "@codemirror/language"
 import {elementName, htmlCompletionSourceWith, TagSpec, eventAttributes} from "./complete"
 export {htmlCompletionSource, TagSpec, htmlCompletionSourceWith} from "./complete"
 
@@ -84,6 +85,9 @@ export const htmlLanguage = LRLanguage.define({
           if (!first || first.name != "OpenTag") return null
           return {from: first.to, to: last.name == "CloseTag" ? last.from : node.to}
         }
+      }),
+      bracketMatchingHandle.add({
+        "OpenTag CloseTag": node => node.getChild("TagName")
       })
     ],
     wrap: configureNesting(defaultNesting, defaultAttrs)
