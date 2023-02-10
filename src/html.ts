@@ -143,6 +143,9 @@ export function html(config: {
   ])
 }
 
+const selfClosers = new Set(
+  "area base br col command embed frame hr img input keygen link meta param source track wbr menuitem".split(" "))
+
 /// Extension that will automatically insert close tags when a `>` or
 /// `/` is typed.
 export const autoCloseTags = EditorView.inputHandler.of((view, from, to, text) => {
@@ -153,14 +156,18 @@ export const autoCloseTags = EditorView.inputHandler.of((view, from, to, text) =
     let {head} = range, around = syntaxTree(state).resolveInner(head, -1), name
     if (around.name == "TagName" || around.name == "StartTag") around = around.parent!
     if (text == ">" && around.name == "OpenTag") {
-      if (around.parent?.lastChild?.name != "CloseTag" && (name = elementName(state.doc, around.parent, head))) {
+      if (around.parent?.lastChild?.name != "CloseTag" &&
+          (name = elementName(state.doc, around.parent, head)) &&
+          !selfClosers.has(name)) {
         let hasRightBracket = view.state.doc.sliceString(head, head + 1) === ">";
         let insert = `${hasRightBracket ? "" : ">"}</${name}>`
         return {range: EditorSelection.cursor(head + 1), changes: {from: head + (hasRightBracket ? 1 : 0), insert}}
       }
     } else if (text == "/" && around.name == "OpenTag") {
       let empty = around.parent, base = empty?.parent
-      if (empty!.from == head - 1 && base!.lastChild?.name != "CloseTag" && (name = elementName(state.doc, base, head))) {
+      if (empty!.from == head - 1 && base!.lastChild?.name != "CloseTag" &&
+          (name = elementName(state.doc, base, head)) &&
+          !selfClosers.has(name)) {
         let hasRightBracket = view.state.doc.sliceString(head, head + 1) === ">"
         let insert = `/${name}${hasRightBracket ? "" : ">"}`
         let pos = head + insert.length + (hasRightBracket ? 1 : 0) 
