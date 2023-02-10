@@ -1,3 +1,9 @@
+## 6.4.2 (2023-02-10)
+
+### Bug fixes
+
+Fix an issue where `autoCloseTags` would close self-closing tags when typed directly in front of a word.
+
 ## 6.4.1 (2023-01-12)
 
 ### Bug fixes
