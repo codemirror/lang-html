@@ -52,12 +52,12 @@ is included in the support extensions. Defaults to true.</p>
 
 <dd><p>Add additional completable attributes to all tags.</p>
 </dd><dt id="user-content-html^config.nestedlanguages">
-  <code><strong><a href="#user-content-html^config.nestedlanguages">nestedLanguages</a></strong>&#8288;?: {tag: &quot;script&quot; | &quot;style&quot; | &quot;textarea&quot;, attrs&#8288;?: fn(<a id="user-content-html^config.nestedlanguages.attrs^attrs" href="#user-content-html^config.nestedlanguages.attrs^attrs">attrs</a>: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>&lt;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>&gt;) → <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>, parser: <a href="https://lezer.codemirror.net/docs/ref/#common.Parser">Parser</a>}[]</code></dt>
+  <code><strong><a href="#user-content-html^config.nestedlanguages">nestedLanguages</a></strong>&#8288;?: {tag: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, attrs&#8288;?: fn(<a id="user-content-html^config.nestedlanguages.attrs^attrs" href="#user-content-html^config.nestedlanguages.attrs^attrs">attrs</a>: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>&lt;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>&gt;) → <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>, parser: <a href="https://lezer.codemirror.net/docs/ref/#common.Parser">Parser</a>}[]</code></dt>
 
-<dd><p>Register additional languages to parse the content of script,
-style, or textarea tags. If given, <code>attrs</code> should be a function
-that, given an object representing the tag's attributes, returns
-<code>true</code> if this language applies.</p>
+<dd><p>Register additional languages to parse the content of specific
+tags. If given, <code>attrs</code> should be a function that, given an
+object representing the tag's attributes, returns <code>true</code> if this
+language applies.</p>
 </dd><dt id="user-content-html^config.nestedattributes">
   <code><strong><a href="#user-content-html^config.nestedattributes">nestedAttributes</a></strong>&#8288;?: {name: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, tagName&#8288;?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, parser: <a href="https://lezer.codemirror.net/docs/ref/#common.Parser">Parser</a>}[]</code></dt>
 
@@ -90,6 +90,10 @@ context-aware way.</p>
 <dd><p>Define tag-specific attributes. Property names are attribute
 names, and property values can be null to indicate free-form
 attributes, or a list of strings for suggested attribute values.</p>
+</dd><dt id="user-content-tagspec.globalattrs">
+  <code><strong><a href="#user-content-tagspec.globalattrs">globalAttrs</a></strong>&#8288;?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code></dt>
+
+<dd><p>When set to false, don't complete global attributes on this tag.</p>
 </dd><dt id="user-content-tagspec.children">
   <code><strong><a href="#user-content-tagspec.children">children</a></strong>&#8288;?: readonly <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>[]</code></dt>
 
