@@ -1,3 +1,9 @@
+## 6.4.3 (2023-03-27)
+
+### Bug fixes
+
+Fix a bug that could cause some nested language regions to be parsed multiple times.
+
 ## 6.4.2 (2023-02-10)
 
 ### Bug fixes
