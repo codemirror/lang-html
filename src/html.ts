@@ -52,7 +52,7 @@ const defaultAttrs: NestedAttr[] = [
 /// parser](https://github.com/lezer-parser/html), extended with the
 /// JavaScript and CSS parsers to parse the content of `<script>` and
 /// `<style>` tags.
-export const htmlLanguage = LRLanguage.define({
+export const htmlPlain = LRLanguage.define({
   name: "html",
   parser: parser.configure({
     props: [
@@ -89,14 +89,21 @@ export const htmlLanguage = LRLanguage.define({
       bracketMatchingHandle.add({
         "OpenTag CloseTag": node => node.getChild("TagName")
       })
-    ],
-    wrap: configureNesting(defaultNesting, defaultAttrs)
+    ]
   }),
   languageData: {
     commentTokens: {block: {open: "<!--", close: "-->"}},
     indentOnInput: /^\s*<\/\w+\W$/,
     wordChars: "-._"
   }
+})
+
+/// A language provider based on the [Lezer HTML
+/// parser](https://github.com/lezer-parser/html), extended with the
+/// JavaScript and CSS parsers to parse the content of `<script>` and
+/// `<style>` tags.
+export const htmlLanguage = htmlPlain.configure({
+  wrap: configureNesting(defaultNesting, defaultAttrs)
 })
 
 /// Language support for HTML, including
@@ -134,7 +141,7 @@ export function html(config: {
       config.nestedAttributes && config.nestedAttributes.length)
     wrap = configureNesting((config.nestedLanguages || []).concat(defaultNesting),
                             (config.nestedAttributes || []).concat(defaultAttrs))
-  let lang = wrap || dialect ? htmlLanguage.configure({dialect, wrap}) : htmlLanguage
+  let lang = wrap ? htmlPlain.configure({wrap, dialect}) : dialect ? htmlLanguage.configure({dialect}) : htmlLanguage
   return new LanguageSupport(lang, [
     htmlLanguage.data.of({autocomplete: htmlCompletionSourceWith(config)}),
     config.autoCloseTags !== false ? autoCloseTags: [],
