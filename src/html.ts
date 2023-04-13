@@ -15,6 +15,8 @@ type NestedLang = {
   parser: Parser
 }
 
+const cssLikeExt = ['scss', 'less', 'css']
+
 const defaultNesting: NestedLang[] = [
   {tag: "script",
    attrs: attrs => attrs.type == "text/typescript" || attrs.lang == "ts",
@@ -32,7 +34,7 @@ const defaultNesting: NestedLang[] = [
    parser: javascriptLanguage.parser},
   {tag: "style",
    attrs(attrs) {
-     return (!attrs.lang || attrs.lang == "css") && (!attrs.type || /^(text\/)?(x-)?(stylesheet|css)$/i.test(attrs.type))
+     return (!attrs.lang || cssLikeExt.includes(attrs.lang)) && (!attrs.type || /^(text\/)?(x-)?(stylesheet|css)$/i.test(attrs.type))
    },
    parser: cssLanguage.parser}
 ]
