@@ -387,22 +387,23 @@ export function elementName(doc: Text, tree: SyntaxNode | null | undefined, max 
   return name ? doc.sliceString(name.from, Math.min(name.to, max)) : ""
 }
 
-function findParentElement(tree: SyntaxNode, skip = false) {
-  for (let cur = tree.parent; cur; cur = cur.parent) if (cur.name == "Element") {
+function findParentElement(tree: SyntaxNode | null, skip = false) {
+  for (; tree; tree = tree.parent) if (tree.name == "Element") {
     if (skip) skip = false
-    else return cur
+    else return tree
   }
   return null
 }
 
 function allowedChildren(doc: Text, tree: SyntaxNode, schema: Schema) {
-  let parentInfo = schema.tags[elementName(doc, findParentElement(tree, true))]
+  let parentInfo = schema.tags[elementName(doc, findParentElement(tree))]
   return parentInfo?.children || schema.allTags
 }
 
 function openTags(doc: Text, tree: SyntaxNode) {
   let open = []
-  for (let parent: SyntaxNode | null = tree; parent = findParentElement(parent);) {
+  for (let parent: SyntaxNode | null = findParentElement(tree); parent && !parent.type.isTop;
+       parent = findParentElement(parent.parent)) {
     let tagName = elementName(doc, parent)
     if (tagName && parent.lastChild!.name == "CloseTag") break
     if (tagName && open.indexOf(tagName) < 0 && (tree.name == "EndTag" || tree.from >= parent.firstChild!.to))
@@ -415,8 +416,9 @@ const identifier = /^[:\-\.\w\u00b7-\uffff]*$/
 
 function completeTag(state: EditorState, schema: Schema, tree: SyntaxNode, from: number, to: number) {
   let end = /\s*>/.test(state.sliceDoc(to, to + 5)) ? "" : ">"
+  let parent = findParentElement(tree, true)
   return {from, to,
-          options: allowedChildren(state.doc, tree, schema).map(tagName => ({label: tagName, type: "type"})).concat(
+          options: allowedChildren(state.doc, parent, schema).map(tagName => ({label: tagName, type: "type"})).concat(
             openTags(state.doc, tree).map((tag, i) => ({label: "/" + tag, apply: "/" + tag + end,
                                                         type: "type", boost: 99 - i}))),
           validFor: /^\/?[:\-\.\w\u00b7-\uffff]*$/}
@@ -520,4 +522,3 @@ export function htmlCompletionSourceWith(config: {
   let schema = extraAttrs || extraTags ? new Schema(extraTags, extraAttrs) : Schema.default
   return (context: CompletionContext) => htmlCompletionFor(schema, context)
 }
-

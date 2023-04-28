@@ -100,4 +100,14 @@ describe("HTML completion", () => {
     let c = get("<html><|")!.options
     ist(c.some(o => o.apply == "/html>"))
   })
+
+  it("completes allowed children", () => {
+    let c = get("<head>|</head>", {explicit: true})!.options
+    ist(!c.some(o => /\<div/.test(o.label)))
+  })
+
+  it("completes allowed children after unfinished opening tag", () => {
+    let c = get("<head><|</head>")!.options
+    ist(!c.some(o => /^div/.test(o.label)))
+  })
 })
