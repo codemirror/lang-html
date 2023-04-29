@@ -395,7 +395,7 @@ function findParentElement(tree: SyntaxNode | null, skip = false) {
   return null
 }
 
-function allowedChildren(doc: Text, tree: SyntaxNode, schema: Schema) {
+function allowedChildren(doc: Text, tree: SyntaxNode | null, schema: Schema) {
   let parentInfo = schema.tags[elementName(doc, findParentElement(tree))]
   return parentInfo?.children || schema.allTags
 }
