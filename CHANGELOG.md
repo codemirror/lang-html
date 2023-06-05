@@ -1,3 +1,9 @@
+## 6.4.4 (2023-06-05)
+
+### Bug fixes
+
+Fix a bug where the completed tag names didn't take into account the parent node's declared children in the schema in some circumstances.
+
 ## 6.4.3 (2023-03-27)
 
 ### Bug fixes
