@@ -479,7 +479,7 @@ function completeAttrValue(state: EditorState, schema: Schema, tree: SyntaxNode,
 }
 
 function htmlCompletionFor(schema: Schema, context: CompletionContext): CompletionResult | null {
-  let {state, pos} = context, around = syntaxTree(state).resolveInner(pos), tree = around.resolve(pos, -1)
+  let {state, pos} = context, tree = syntaxTree(state).resolveInner(pos, -1), around = tree.resolve(pos)
   for (let scan = pos, before; around == tree && (before = tree.childBefore(scan));) {
     let last = before.lastChild
     if (!last || !last.type.isError || last.from < last.to) break
