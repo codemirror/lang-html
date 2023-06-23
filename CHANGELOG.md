@@ -1,3 +1,9 @@
+## 6.4.5 (2023-06-23)
+
+### Bug fixes
+
+Fix a bug where HTML autocompletion didn't work when the cursor was at the end of a bit of HTML code inside a mixed-language document.
+
 ## 6.4.4 (2023-06-05)
 
 ### Bug fixes
