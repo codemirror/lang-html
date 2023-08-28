@@ -2,6 +2,7 @@ import {parser, configureNesting} from "@lezer/html"
 import {Parser} from "@lezer/common"
 import {cssLanguage, css} from "@codemirror/lang-css"
 import {javascriptLanguage, typescriptLanguage, jsxLanguage, tsxLanguage, javascript} from "@codemirror/lang-javascript"
+import {jsonLanguage} from "@codemirror/lang-json";
 import {EditorView} from "@codemirror/view"
 import {EditorSelection} from "@codemirror/state"
 import {LRLanguage, indentNodeProp, foldNodeProp, LanguageSupport, syntaxTree,
@@ -16,6 +17,9 @@ type NestedLang = {
 }
 
 const defaultNesting: NestedLang[] = [
+  {tag: "script",
+   attrs: attrs => attrs.type == "importmap" || attrs.type == "speculationrules",
+   parser: jsonLanguage.parser},
   {tag: "script",
    attrs: attrs => attrs.type == "text/typescript" || attrs.lang == "ts",
    parser: typescriptLanguage.parser},
@@ -177,7 +181,7 @@ export const autoCloseTags = EditorView.inputHandler.of((view, from, to, text) =
           !selfClosers.has(name)) {
         let hasRightBracket = view.state.doc.sliceString(head, head + 1) === ">"
         let insert = `/${name}${hasRightBracket ? "" : ">"}`
-        let pos = head + insert.length + (hasRightBracket ? 1 : 0) 
+        let pos = head + insert.length + (hasRightBracket ? 1 : 0)
         return {range: EditorSelection.cursor(pos), changes: {from: head, insert}}
       }
     }
