@@ -1,3 +1,11 @@
+## 6.4.6 (2023-08-28)
+
+### Bug fixes
+
+`autoCloseTags` now generates two separate transactions, so that the completion can be undone separately.
+
+Add highlighting for the content of `<script>` tags with a type of `importmap` or `speculationrules`.
+
 ## 6.4.5 (2023-06-23)
 
 ### Bug fixes
