@@ -15,6 +15,8 @@ type NestedLang = {
   parser: Parser
 }
 
+const jsonParser = javascriptLanguage.parser.configure({top: "SingleExpression"})
+
 const defaultNesting: NestedLang[] = [
   {tag: "script",
    attrs: attrs => attrs.type == "text/typescript" || attrs.lang == "ts",
@@ -25,6 +27,9 @@ const defaultNesting: NestedLang[] = [
   {tag: "script",
    attrs: attrs => attrs.type == "text/typescript-jsx",
    parser: tsxLanguage.parser},
+  {tag: "script",
+   attrs: attrs => attrs.type == "importmap" || attrs.type == "speculationrules",
+   parser: jsonParser},
   {tag: "script",
    attrs(attrs) {
      return !attrs.type || /^(?:text|application)\/(?:x-)?(?:java|ecma)script$|^module$|^$/i.test(attrs.type)
