@@ -28,7 +28,9 @@ const defaultNesting: NestedLang[] = [
    attrs: attrs => attrs.type == "text/typescript-jsx",
    parser: tsxLanguage.parser},
   {tag: "script",
-   attrs: attrs => attrs.type == "importmap" || attrs.type == "speculationrules",
+   attrs(attrs) {
+     return /^(importmap|speculationrules|application\/(.+\+)?json)$/i.test(attrs.type)
+   },
    parser: jsonParser},
   {tag: "script",
    attrs(attrs) {
