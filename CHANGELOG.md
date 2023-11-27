@@ -1,3 +1,9 @@
+## 6.4.7 (2023-11-27)
+
+### Bug fixes
+
+Parse `script` tags with `application/json` type as JSON syntax.
+
 ## 6.4.6 (2023-08-28)
 
 ### Bug fixes
