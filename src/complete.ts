@@ -493,7 +493,7 @@ function htmlCompletionFor(schema: Schema, context: CompletionContext): Completi
     return completeTag(state, schema, tree, pos, pos)
   } else if (tree.name == "StartCloseTag" || tree.name == "IncompleteCloseTag") {
     return completeCloseTag(state, tree, pos, pos)
-  } else if (context.explicit && (tree.name == "OpenTag" || tree.name == "SelfClosingTag") || tree.name == "AttributeName") {
+  } else if (tree.name == "OpenTag" || tree.name == "SelfClosingTag" || tree.name == "AttributeName") {
     return completeAttrName(state, schema, tree, tree.name == "AttributeName" ? tree.from : pos, pos)
   } else if (tree.name == "Is" || tree.name == "AttributeValue" || tree.name == "UnquotedAttributeValue") {
     return completeAttrValue(state, schema, tree, tree.name == "Is" ? pos : tree.from, pos)
