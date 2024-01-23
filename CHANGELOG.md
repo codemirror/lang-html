@@ -1,3 +1,9 @@
+## 6.4.8 (2024-01-23)
+
+### Bug fixes
+
+Complete attribute names after whitespace in a tag even when completion isn't explicitly triggered.
+
 ## 6.4.7 (2023-11-27)
 
 ### Bug fixes
