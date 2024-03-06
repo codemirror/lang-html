@@ -168,20 +168,20 @@ export const autoCloseTags = EditorView.inputHandler.of((view, from, to, text, i
   let base = insertTransaction(), {state} = base
   let closeTags = state.changeByRange(range => {
     let didType = state.doc.sliceString(range.from - 1, range.to) == text
-    let {head} = range, around = syntaxTree(state).resolveInner(head - 1, -1), name
-    if (around.name == "TagName" || around.name == "StartTag") around = around.parent!
-    if (didType && text == ">" && around.name == "OpenTag") {
-      if (around.parent?.lastChild?.name != "CloseTag" &&
-          (name = elementName(state.doc, around.parent, head)) &&
+    let {head} = range, after = syntaxTree(state).resolveInner(head, -1), name
+    if (didType && text == ">" && after.name == "EndTag") {
+      let tag = after.parent!
+      if (tag.parent?.lastChild?.name != "CloseTag" &&
+          (name = elementName(state.doc, tag.parent, head)) &&
           !selfClosers.has(name)) {
         let to = head + (state.doc.sliceString(head, head + 1) === ">" ? 1 : 0)
         let insert = `</${name}>`
         return {range, changes: {from: head, to, insert}}
       }
-    } else if (didType && text == "/" && around.name == "IncompleteCloseTag") {
-      let base = around.parent!
-      if (around.from == head - 2 && base.lastChild?.name != "CloseTag" &&
-          (name = elementName(state.doc, base, head)) && !selfClosers.has(name)) {
+    } else if (didType && text == "/" && after.name == "IncompleteCloseTag") {
+      let tag = after.parent!
+      if (after.from == head - 2 && tag.lastChild?.name != "CloseTag" &&
+          (name = elementName(state.doc, tag, head)) && !selfClosers.has(name)) {
         let to = head + (state.doc.sliceString(head, head + 1) === ">" ? 1 : 0)
         let insert = `${name}>`
         return {
