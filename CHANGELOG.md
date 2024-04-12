@@ -1,3 +1,9 @@
+## 6.4.9 (2024-04-12)
+
+### Bug fixes
+
+Fix a bug in `autoCloseTags` that made tags not close when typing > after an attribute.
+
 ## 6.4.8 (2024-01-23)
 
 ### Bug fixes
