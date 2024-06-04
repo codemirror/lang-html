@@ -55,11 +55,7 @@ const defaultAttrs: NestedAttr[] = [
    parser: cssLanguage.parser.configure({top: "Styles"})}
 ].concat(eventAttributes.map(name => ({name, parser: javascriptLanguage.parser})))
 
-/// A language provider based on the [Lezer HTML
-/// parser](https://github.com/lezer-parser/html), extended with the
-/// JavaScript and CSS parsers to parse the content of `<script>` and
-/// `<style>` tags.
-export const htmlPlain = LRLanguage.define({
+const htmlPlain = LRLanguage.define({
   name: "html",
   parser: parser.configure({
     props: [
@@ -122,9 +118,9 @@ export function html(config: {
   /// expect to only be parsing a fragment of HTML text, not a full
   /// document).
   matchClosingTags?: boolean,
-  // By default, the parser does not allow arbitrary self-closing tags.
-  // Set this to `true` to turn on support for `/>` self-closing tag
-  // syntax.
+  /// By default, the parser does not allow arbitrary self-closing tags.
+  /// Set this to `true` to turn on support for `/>` self-closing tag
+  /// syntax.
   selfClosingTags?: boolean,
   /// Determines whether [`autoCloseTags`](#lang-html.autoCloseTags)
   /// is included in the support extensions. Defaults to true.

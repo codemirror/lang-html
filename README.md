@@ -23,7 +23,7 @@ to communication around the project.
 
 <dl>
 <dt id="user-content-html">
-  <code><strong><a href="#user-content-html">html</a></strong>(<a id="user-content-html^config" href="#user-content-html^config">config</a>&#8288;?: {selfClosingTags&#8288;?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>} = {}) → <a href="https://codemirror.net/docs/ref#language.LanguageSupport">LanguageSupport</a></code></dt>
+  <code><strong><a href="#user-content-html">html</a></strong>(<a id="user-content-html^config" href="#user-content-html^config">config</a>&#8288;?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a> = {}) → <a href="https://codemirror.net/docs/ref#language.LanguageSupport">LanguageSupport</a></code></dt>
 
 <dd><p>Language support for HTML, including
 <a href="#user-content-htmlcompletion"><code>htmlCompletion</code></a> and JavaScript and
@@ -38,6 +38,12 @@ CSS support extensions.</p>
 tags. Set this to <code>false</code> to turn that off (for example when you
 expect to only be parsing a fragment of HTML text, not a full
 document).</p>
+</dd><dt id="user-content-html^config.selfclosingtags">
+  <code><strong><a href="#user-content-html^config.selfclosingtags">selfClosingTags</a></strong>&#8288;?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code></dt>
+
+<dd><p>By default, the parser does not allow arbitrary self-closing tags.
+Set this to <code>true</code> to turn on support for <code>/&gt;</code> self-closing tag
+syntax.</p>
 </dd><dt id="user-content-html^config.autoclosetags">
   <code><strong><a href="#user-content-html^config.autoclosetags">autoCloseTags</a></strong>&#8288;?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code></dt>
 
