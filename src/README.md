@@ -19,6 +19,19 @@ we have a [code of
 conduct](http://contributor-covenant.org/version/1/1/0/) that applies
 to communication around the project.
 
+## Usage
+
+```javascript
+import {EditorView, basicSetup} from "codemirror"
+import {html} from "@codemirror/lang-html"
+
+const view = new EditorView({
+  parent: document.body,
+  doc: `<!doctype html>\n<title>HTML</title>`,
+  extensions: [basicSetup, html()]
+})
+```
+
 ## API Reference
 
 @html
