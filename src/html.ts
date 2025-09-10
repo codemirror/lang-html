@@ -97,7 +97,7 @@ const htmlPlain = LRLanguage.define({
   languageData: {
     commentTokens: {block: {open: "<!--", close: "-->"}},
     indentOnInput: /^\s*<\/\w+\W$/,
-    wordChars: "-._"
+    wordChars: "-_"
   }
 })
 
