@@ -1,3 +1,9 @@
+## 6.4.10 (2025-09-11)
+
+### Bug fixes
+
+Don't include period characters in the language's word characters.
+
 ## 6.4.9 (2024-04-12)
 
 ### Bug fixes
