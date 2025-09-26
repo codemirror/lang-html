@@ -416,7 +416,7 @@ const identifier = /^[:\-\.\w\u00b7-\uffff]*$/
 
 function completeTag(state: EditorState, schema: Schema, tree: SyntaxNode, from: number, to: number) {
   let end = /\s*>/.test(state.sliceDoc(to, to + 5)) ? "" : ">"
-  let parent = findParentElement(tree, true)
+  let parent = findParentElement(tree, tree.name == "StartTag" || tree.name == "TagName")
   return {from, to,
           options: allowedChildren(state.doc, parent, schema).map(tagName => ({label: tagName, type: "type"})).concat(
             openTags(state.doc, tree).map((tag, i) => ({label: "/" + tag, apply: "/" + tag + end,
@@ -489,7 +489,7 @@ function htmlCompletionFor(schema: Schema, context: CompletionContext): Completi
   if (tree.name == "TagName") {
     return tree.parent && /CloseTag$/.test(tree.parent.name) ? completeCloseTag(state, tree, tree.from, pos)
       : completeTag(state, schema, tree, tree.from, pos)
-  } else if (tree.name == "StartTag") {
+  } else if (tree.name == "StartTag" || tree.name == "IncompleteTag") {
     return completeTag(state, schema, tree, pos, pos)
   } else if (tree.name == "StartCloseTag" || tree.name == "IncompleteCloseTag") {
     return completeCloseTag(state, tree, pos, pos)
