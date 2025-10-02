@@ -1,3 +1,9 @@
+## 6.4.11 (2025-10-02)
+
+### Bug fixes
+
+Adjust autocompletion to work with @lezer/html's improved handling of `<` characters without tag name after them.
+
 ## 6.4.10 (2025-09-11)
 
 ### Bug fixes
