@@ -41,6 +41,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/codemirror/lang-html.git"
+    "url": "git+https://github.com/codemirror/lang-html.git"
   }
 }
