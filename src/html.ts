@@ -102,7 +102,7 @@ const htmlPlain = LRLanguage.define({
 })
 
 /// A language provider based on the [Lezer HTML
-/// parser](https://github.com/lezer-parser/html), extended with the
+/// parser](https://code.haverbeke.berlin/lezer/html), extended with the
 /// JavaScript and CSS parsers to parse the content of `<script>` and
 /// `<style>` tags.
 export const htmlLanguage = htmlPlain.configure({
