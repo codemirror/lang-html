@@ -1,3 +1,5 @@
+**This repository has moved to https://code.haverbeke.berlin/codemirror/lang-html**
+
 <!-- NOTE: README.md is generated from src/README.md -->
 
 # @codemirror/lang-html [![NPM version](https://img.shields.io/npm/v/@codemirror/lang-html.svg)](https://www.npmjs.org/package/@codemirror/lang-html)
